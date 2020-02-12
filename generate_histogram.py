@@ -7,18 +7,47 @@ import matplotlib.pyplot as plt
 import matplotlib
 matplotlib.use("TkAgg")
 
-def plot_histo(data, bins, tmin, tmax, days, show, outdir):
+def plot_histo(data, tmin, tmax, days, show, outdir):
+
+    bins = [0, 10, 20, 30, 40, 50, 60, 70, 80]
+    bins2 = [80, 180]
 
     f2  = plt.figure()
     ax2 = f2.add_subplot(111)
     title = "Offaxis Histogram %d - %d - (%d days)"%(tmin, tmax, days)
     ax2.set_title(title, fontsize='large')
-    #ax2.set_xlim(0., 100.)
-    #ax2.set_ylim(0., 100.)
+
+    hist, bins = np.histogram(data, bins=bins, density=False)
+    hist2, bins2 = np.histogram(data, bins=bins2, density=False)
+
+
+    width = 1. * (bins[1] - bins[0])
+    center = (bins[:-1] + bins[1:]) / 2
+    width2 = 1. * (bins2[1] - bins2[0])
+    center2 = (bins2[:-1] + bins2[1:]) / 2
+
+    total_obs = len(data)
+    normalized_data =  hist/total_obs*100.
+    normalized_data2 = hist2/total_obs*100.
+
+    # print("counts:",hist)
+    # print("normalized counts:",normalized_data)
+    ax2.bar(center, normalized_data, align='center', color='w', edgecolor='b', width=width)
+    ax2.bar(center2, normalized_data2, align='center', color='w', edgecolor='b', width=width2)
+
+
+
+    ax2.set_xlim(0., 100.)
+    ax2.set_ylim(0., 100.)
     ax2.set_ylabel('\\% of time spent')
     ax2.set_xlabel('off-axis angle $[^\\circ]$')
-    plt.xticks(bins, bins)
-    ax2.hist(data, bins)
+    labels  = bins
+    xlabels = bins
+    plt.xticks(xlabels, labels)
+
+
+    ax2.hist(data, bins, density=True)
+
 
     filename = "offaxis_hist_{}_{}.png".format(tmin, tmax)
     outdir = Path(outdir).joinpath(filename)
@@ -107,6 +136,4 @@ if __name__ == "__main__":
 
     tmin, tmax, aggregated_data = aggregate_data(args.directory, args.fromtt, args.days)
 
-    bins = [0, 10, 20, 30, 40, 50, 60, 70, 80,  180]
-
-    plot_histo(aggregated_data, bins, tmin, tmax, args.days, args.show, args.outdir)
+    plot_histo(aggregated_data, tmin, tmax, args.days, args.show, args.outdir)
