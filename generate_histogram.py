@@ -9,6 +9,32 @@ matplotlib.use("TkAgg")
 
 def plot_histo(data, tmin, tmax, days, show, outdir):
 
+    fig_width_pt = 576.79134
+    fontsize     = 14
+
+    inches_per_pt = 1.0/72.27               # Convert pt to inch
+    golden_mean = (np.sqrt(5)+1.0)/2.0      # Aesthetic ratio
+    fig_width = fig_width_pt*inches_per_pt  # width in inches
+    fig_height = fig_width/golden_mean      # height in inches
+
+    fig_size =  [fig_width,fig_height]
+
+    params = {  'backend': 'pdf',
+                'axes.labelsize': fontsize,
+                'font.size': fontsize,
+                'legend.fontsize': fontsize,
+                'xtick.labelsize': fontsize,
+                'ytick.labelsize': fontsize,
+                'axes.linewidth': 0.5,
+                'lines.linewidth': 0.5,
+                #'text.usetex': True,
+                'ps.usedistiller': False,
+                'figure.figsize': fig_size,
+                'font.family': 'DejaVu Sans',
+                'font.serif': ['Bitstream Vera Serif']}
+
+    plt.rcParams.update(params)
+
     bins = [0, 10, 20, 30, 40, 50, 60, 70, 80]
     bins2 = [80, 180]
 
