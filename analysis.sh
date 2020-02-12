@@ -1,6 +1,6 @@
 #!/bin/bash
 
-show=yes
+show=no
 outdir=histograms
 
 # 01/01/2010

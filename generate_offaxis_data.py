@@ -83,8 +83,12 @@ if __name__=="__main__":
     took = time()-time_s
     print("Took %f seconds with %d processes"%(took, args.processes))
 
-    metadataOutfile = Path(args.outdir).joinpath("eng_data/offaxis_data/metadata.txt")
-    with open(metadataOutfile, "w") as mto:
+    metadafilename = "metadata.txt"
+    metadataoutpath = Path(args.outdir).joinpath("eng_data/offaxis_data")
+    metadataoutpath.mkdir(parents=True, exist_ok=True)
+    metadataoutfilepath = metadataoutpath.joinpath(metadafilename)
+
+    with open(metadataoutfilepath, "w") as mto:
         tmin = input_tmin_tmax[0][0]
         tmax = input_tmin_tmax[-1][1]
         number_of_files = len(input_tmin_tmax)
