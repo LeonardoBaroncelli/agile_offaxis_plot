@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import matplotlib
 matplotlib.use("TkAgg")
 
-def plot_histo(data, bins, tmin, tmax, days):
+def plot_histo(data, bins, tmin, tmax, days, show, outdir):
 
     f2  = plt.figure()
     ax2 = f2.add_subplot(111)
@@ -19,8 +19,13 @@ def plot_histo(data, bins, tmin, tmax, days):
     ax2.set_xlabel('off-axis angle $[^\\circ]$')
     plt.xticks(bins, bins)
     ax2.hist(data, bins)
-    plt.show()
-    f2.savefig("offaxis_hist.png")
+
+    filename = "offaxis_hist_{}_{}.png".format(tmin, tmax)
+    outdir = Path(outdir).joinpath(filename)
+    f2.savefig(str(outdir))
+
+    if show:
+        plt.show()
 
 def extract_times(filename):
     parts = filename.split(".")[0]
@@ -66,14 +71,27 @@ def aggregate_data(input_dir, _from, days):
     return tmin ,tmax, aggregated_data
 
 
+def str2bool(v):
+    if isinstance(v, bool):
+       return v
+    if v.lower() in ('yes', 'true', 't', 'y', '1'):
+        return True
+    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
+        return False
+    else:
+        raise argparse.ArgumentTypeError('Boolean value expected.')
+
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='Offaxis Histogram generator')
     parser.add_argument('--directory', type=str, required=True)
     parser.add_argument('--fromtt', type=int, required=True)
     parser.add_argument('--days', type=int, required=True)
+    parser.add_argument('--show', type=str2bool, required=True)
+    parser.add_argument('--outdir', type=str, required=True)
     args = parser.parse_args()
 
+    Path(args.outdir).mkdir(parents=True, exist_ok=True)
 
     metadata_file = Path(args.directory).joinpath("metadata.txt")
     with open(metadata_file, "r") as mtf:
@@ -91,4 +109,4 @@ if __name__ == "__main__":
 
     bins = [0, 10, 20, 30, 40, 50, 60, 70, 80,  180]
 
-    plot_histo(aggregated_data, bins, tmin, tmax, args.days)
+    plot_histo(aggregated_data, bins, tmin, tmax, args.days, args.show, args.outdir)
