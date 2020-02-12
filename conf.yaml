@@ -1,0 +1,14 @@
+input:
+  evtfile: /ASDC_PROC3/FM3.119_ASDCSTDf/INDEX/EVT.index
+  logfile: /ASDC_PROC3/DATA_ASDCSTDk/INDEX/LOG.log.index
+output:
+  outdir: ./output
+  filenameprefix: quickstart
+  logfilenameprefix: quickstart
+  verboselvl: 0
+selection:
+  tmin: 189388801
+  tmax: 220924801
+  timetype: TT
+  glon: 80
+  glat: 0
