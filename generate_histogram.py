@@ -42,6 +42,8 @@ def plot_histo(data, tmin, tmax, days, show, outdir):
     ax2 = f2.add_subplot(111)
     title = "Offaxis Histogram %d - %d - (%d days)"%(tmin, tmax, days)
     ax2.set_title(title, fontsize='large')
+    ttl = ax2.title
+    ttl.set_position([.5, 1.05])
 
     hist, bins = np.histogram(data, bins=bins, density=False)
     hist2, bins2 = np.histogram(data, bins=bins2, density=False)
