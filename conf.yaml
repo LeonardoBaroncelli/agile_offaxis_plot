@@ -2,10 +2,10 @@ input:
   evtfile: /ASDC_PROC3/FM3.119_ASDCSTDf/INDEX/EVT.index
   logfile: /ASDC_PROC3/DATA_ASDCSTDk/INDEX/LOG.log.index
 output:
-  outdir: ./output
+  outdir: ./august/output
   filenameprefix: quickstart
   logfilenameprefix: quickstart
-  verboselvl: 0
+  verboselvl: 1
 selection:
   tmin: 189388801
   tmax: 220924801

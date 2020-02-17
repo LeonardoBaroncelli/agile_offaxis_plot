@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import matplotlib
 matplotlib.use("TkAgg")
 
-def plot_histo(data, tmin, tmax, days, show, outdir):
+def plot_histo(data, tmin, tmax, days, show, outdir, titlesuffix):
 
     fig_width_pt = 576.79134
     fontsize     = 14
@@ -40,7 +40,12 @@ def plot_histo(data, tmin, tmax, days, show, outdir):
 
     f2  = plt.figure()
     ax2 = f2.add_subplot(111)
-    title = "Offaxis Histogram %d - %d - (%d days)"%(tmin, tmax, days)
+    if days == 1:
+        title = "Offaxis Histogram %d - %d - (%d day) %s"%(tmin, tmax, days, titlesuffix)
+    else:
+        title = "Offaxis Histogram %d - %d - (%d days) %s"%(tmin, tmax, days, titlesuffix)
+
+    print("Plot title:",title)
     ax2.set_title(title, fontsize='large')
     ttl = ax2.title
     ttl.set_position([.5, 1.05])
@@ -93,9 +98,10 @@ def extract_times(filename):
 
 def aggregate_data(input_dir, _from, days):
 
-    print("Aggregating data..")
     tmin = _from
     tmax = _from + days*86400
+
+    print("Aggregating data..tmin=%f tmax=%f"%(tmin, tmax))
 
     tstart = time.time()
 
@@ -146,6 +152,7 @@ if __name__ == "__main__":
     parser.add_argument('--days', type=int, required=True)
     parser.add_argument('--show', type=str2bool, required=True)
     parser.add_argument('--outdir', type=str, required=True)
+    parser.add_argument('--titlesuffix', type=str, default="")
     args = parser.parse_args()
 
     Path(args.outdir).mkdir(parents=True, exist_ok=True)
@@ -160,8 +167,8 @@ if __name__ == "__main__":
     number_of_files = int(number_of_files)
     delta = int(delta)
 
-    print("tmin %d tmax %d number_of_files %d delta %d"%(tmin, tmax, number_of_files, delta))
+    print("[dataset info] number_of_files %d tmin %d tmax %d delta %d"%(number_of_files, tmin, tmax, delta))
 
     tmin, tmax, aggregated_data = aggregate_data(args.directory, args.fromtt, args.days)
 
-    plot_histo(aggregated_data, tmin, tmax, args.days, args.show, args.outdir)
+    plot_histo(aggregated_data, tmin, tmax, args.days, args.show, args.outdir, args.titlesuffix)
