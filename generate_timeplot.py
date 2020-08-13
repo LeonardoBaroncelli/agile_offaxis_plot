@@ -18,7 +18,7 @@ if __name__ == '__main__':
     zmax=60
     step=0.1
     logfilesIndex=None
-    computeHistogram=True
+    computeHistogram=False
     writeFiles=True
     saveImage=True
     formatExt="png"

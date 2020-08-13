@@ -5,7 +5,7 @@ from pathlib import Path
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
-matplotlib.use("TkAgg")
+matplotlib.use("agg")
 
 def plot_histo(data, tmin, tmax, days, show, outdir, titlesuffix):
 
@@ -107,24 +107,28 @@ def aggregate_data(input_dir, _from, days):
 
     aggregated_data = None
 
-    for filename in os.listdir(args.directory):
+    filenames = [filename for filename in os.listdir(args.directory) if filename.endswith(".npy") ]
 
-        if filename.endswith(".npy"):
+    if len(filenames) == 0:
+        print(f"No .npy files found in {args.directory}")
+        exit(1)
 
-            file_tmin, file_tmax = extract_times(filename)
+    for filename in filenames:
 
-            if file_tmin >= tmin and file_tmax <= tmax:
+        file_tmin, file_tmax = extract_times(filename)
 
-                file = os.path.join(args.directory, filename)
-                data = np.load(file)
+        print(f"file_tmin: {file_tmin} file_tmax: {file_tmax} extracted from {filename}")
 
-                if aggregated_data is None:
-                    aggregated_data = data
-                else:
-                    aggregated_data = np.concatenate((aggregated_data, data))
+        if file_tmin >= tmin and file_tmax <= tmax:
 
-        else:
-            print(filename,"skipped.")
+            file = os.path.join(args.directory, filename)
+            data = np.load(file)
+
+            if aggregated_data is None:
+                aggregated_data = data
+            else:
+                aggregated_data = np.concatenate((aggregated_data, data))
+
 
     tstop = time.time()
     print("Took %f seconds"%(tstop-tstart))
