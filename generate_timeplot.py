@@ -7,16 +7,21 @@ if __name__ == '__main__':
     parser.add_argument('--fromtt', type=int, required=True)
     parser.add_argument('--timevalue', type=int, required=True)
     parser.add_argument('--timeunit', type=str, choices=["days", "hours", "minutes", "seconds"], required=True)
+    parser.add_argument('--step', type=float, required=True, help="Must match the step used for generating data")
+    parser.add_argument('--srcx', type=float, required=True, help="Must match the srcx used for generating data")
+    parser.add_argument('--srcy', type=float, required=True, help="Must match the srcy used for generating data")
+    parser.add_argument('--ref', type=str, choices=["equ", "gal"], required=True)
     parser.add_argument('--titlesuffix', type=str, default="")
+
     args = parser.parse_args()
 
     agEng = AGEng("./conf.yaml")
 
-    src_x=129.7
-    src_y=3.7
-    ref="gal"
+    src_x=args.srcx
+    src_y=args.srcy
+    ref=args.ref
     zmax=60
-    step=0.1
+    step=args.step
     logfilesIndex=None
     computeHistogram=False
     writeFiles=True

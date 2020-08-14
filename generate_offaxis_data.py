@@ -37,8 +37,8 @@ if __name__=="__main__":
     parser = argparse.ArgumentParser(description='Offaxis data generator')
     parser.add_argument('--inputfile', type=str, required=True)
     parser.add_argument('--outdir', type=str, required=True)
-    parser.add_argument('--srcx', type=float, required=True)
-    parser.add_argument('--srcy', type=float, required=True)
+    parser.add_argument('--srcx', type=float, required=True, description="GAL coordinate")
+    parser.add_argument('--srcy', type=float, required=True, description="GAL coordinate")
     parser.add_argument('--step', type=float, default=100)
     parser.add_argument('--processes', type=int, required=True)
     args = parser.parse_args()
@@ -49,8 +49,7 @@ if __name__=="__main__":
     filename = args.inputfile
 
     ref="gal"
-    # src_x=129.7
-    # src_y=3.7
+
     src_x = args.srcx
     src_y = args.srcy
     step=args.step
